@@ -1,7 +1,8 @@
 package id.rw10.app;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,7 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ComponentActivity {
     private WebView webView;
     private LinearLayout errorView;
     private final Uri serverUri = Uri.parse(BuildConfig.SERVER_URL);
@@ -27,6 +28,11 @@ public class MainActivity extends Activity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override public void handleOnBackPressed() {
+                handleBackNavigation();
+            }
+        });
         getWindow().setStatusBarColor(Color.rgb(245,247,251));
         getWindow().setNavigationBarColor(Color.rgb(245,247,251));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
@@ -80,14 +86,14 @@ public class MainActivity extends Activity {
         @Override public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) { handler.cancel(); showError(); }
     }
 
-    @Override public void onBackPressed() {
+    private void handleBackNavigation() {
         if (webView.getVisibility()==View.VISIBLE) {
             webView.evaluateJavascript("window.rw10Back ? String(window.rw10Back()) : 'false'", value -> {
                 if (!"\"true\"".equals(value) && !"true".equals(value)) {
                     if (webView.canGoBack()) webView.goBack(); else finish();
                 }
             });
-        } else super.onBackPressed();
+        } else finish();
     }
     @Override protected void onDestroy() { if(webView!=null){ webView.stopLoading(); webView.destroy(); } super.onDestroy(); }
 }

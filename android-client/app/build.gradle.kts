@@ -42,3 +42,8 @@ android {
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     lint { abortOnError = true; checkReleaseBuilds = true }
 }
+
+
+dependencies {
+    implementation("androidx.activity:activity:1.10.1")
+}
