@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - "android-client/**"
-      - ".github/workflows/build-internal-apk.yml"
 
 permissions:
   contents: read
