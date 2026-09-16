@@ -1,0 +1,37 @@
+data/
+__pycache__/
+*.pyc
+android-client/.gradle/
+android-client/app/build/
+android-client/output/
+android-client/*.jks
+android-client/keystore.properties
+.idea/
+local.properties
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+keystore.properties
+local.properties
+
+# Runtime data and backups
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.tar
+*.tar.gz
+*.zip
+
+# Logs and caches
+*.log
+.pytest_cache/
+.coverage

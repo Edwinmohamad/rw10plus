@@ -1,0 +1,20 @@
+services:
+  rw10plus:
+    build: .
+    container_name: rw10plus-v03
+    restart: unless-stopped
+    ports:
+      - "8188:8000"
+    environment:
+      TZ: Asia/Jakarta
+      RW10_PORT: "8000"
+      RW10_DB_PATH: /app/data/rw10.db
+    volumes:
+      - ./data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0

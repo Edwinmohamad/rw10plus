@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Internal v0.3 LAN pilot only. Disable cleartext when production HTTPS is active. -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
