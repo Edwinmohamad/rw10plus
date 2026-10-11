@@ -30,15 +30,22 @@ jobs:
     timeout-minutes: 20
 
     steps:
+      - name: Prepare runner workspace
+        run: |
+          sudo mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
+
       - name: Checkout source
         uses: actions/checkout@v7
+        with:
+          clean: false
 
       - name: Validate Docker compose
-        run: docker compose config --quiet
+        run: docker compose --project-directory "$GITHUB_WORKSPACE" -f "$GITHUB_WORKSPACE/compose.yaml" config --quiet
 
       - name: Deploy RW10+
-        run: sudo bash install.sh
+        run: sudo bash "$GITHUB_WORKSPACE/install.sh"
 
       - name: Show containers
         if: always()
-        run: docker compose ps
+        run: docker compose --project-directory "$GITHUB_WORKSPACE" -f "$GITHUB_WORKSPACE/compose.yaml" ps
