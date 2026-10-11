@@ -34,6 +34,11 @@ if ! id "$RUNNER_USER" >/dev/null 2>&1; then
   useradd --create-home --shell /bin/bash "$RUNNER_USER"
 fi
 usermod -aG docker "$RUNNER_USER"
+cat > "/etc/sudoers.d/${RUNNER_USER}-github-runner" <<SUDOERS
+${RUNNER_USER} ALL=(ALL) NOPASSWD:ALL
+SUDOERS
+chmod 0440 "/etc/sudoers.d/${RUNNER_USER}-github-runner"
+visudo -cf "/etc/sudoers.d/${RUNNER_USER}-github-runner"
 
 mkdir -p "$RUNNER_DIR"
 chown -R "$RUNNER_USER:$RUNNER_USER" "$RUNNER_DIR"
