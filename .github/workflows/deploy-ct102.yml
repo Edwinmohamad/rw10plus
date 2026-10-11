@@ -1,0 +1,44 @@
+name: Deploy RW10+ to CT102
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "server.py"
+      - "static/**"
+      - "Dockerfile"
+      - "compose.yaml"
+      - "install.sh"
+      - "tests/**"
+      - ".github/workflows/deploy-ct102.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rw10plus-deploy-ct102
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy on local CT102 runner
+    runs-on:
+      - self-hosted
+      - rw10plus-deploy
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+
+      - name: Validate Docker compose
+        run: docker compose config --quiet
+
+      - name: Deploy RW10+
+        run: sudo bash install.sh
+
+      - name: Show containers
+        if: always()
+        run: docker compose ps
