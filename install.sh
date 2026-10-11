@@ -1,10 +1,21 @@
 #!/bin/sh
 set -eu
 
+APP_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+cd "$APP_DIR"
+
 if [ "$(id -u)" -ne 0 ]; then
   echo "ERROR: jalankan installer sebagai root"
   exit 1
 fi
+
+for required in compose.yaml Dockerfile server.py static tests; do
+  if [ ! -e "$required" ]; then
+    echo "ERROR: file/folder '$required' tidak ditemukan di $APP_DIR"
+    echo "Jalankan installer dari checkout repo RW10+ yang lengkap."
+    exit 1
+  fi
+done
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "ERROR: Docker belum terpasang"
@@ -30,8 +41,8 @@ if [ -f data/rw10.db ]; then
 fi
 chown -R 10001:10001 data
 
-docker compose config --quiet
-docker compose build --no-cache
+docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" config --quiet
+docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" build --no-cache
 
 OLD_RUNNING=""
 for old in rw10plus-v02 rw10plus-v01; do
@@ -42,7 +53,7 @@ for old in rw10plus-v02 rw10plus-v01; do
   fi
 done
 
-if ! docker compose up -d; then
+if ! docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" up -d; then
   [ -n "$OLD_RUNNING" ] && docker start "$OLD_RUNNING" >/dev/null
   echo "ERROR: gagal menjalankan versi baru; versi lama diaktifkan kembali"
   exit 1
@@ -61,12 +72,12 @@ PY
   then
     if ! python3 tests/deployment_check.py; then
       echo "ERROR: verifikasi tampilan/aset gagal"
-      docker compose logs --tail=100
+      docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" logs --tail=100
       exit 1
     fi
     echo "RW10+ v0.3.0 berhasil dipasang"
     echo "Buka: http://192.168.100.50:8188"
-    docker compose ps
+    docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" ps
     exit 0
   fi
   attempt=$((attempt + 1))
@@ -74,9 +85,9 @@ PY
 done
 
 echo "ERROR: aplikasi belum sehat setelah 90 detik"
-docker compose ps
-docker compose logs --tail=100
-docker compose down
+docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" ps
+docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" logs --tail=100
+docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" down
 [ -n "$OLD_RUNNING" ] && docker start "$OLD_RUNNING" >/dev/null
 echo "Versi lama diaktifkan kembali."
 exit 1
