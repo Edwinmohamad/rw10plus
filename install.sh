@@ -49,8 +49,16 @@ if ! docker compose up -d; then
 fi
 
 attempt=0
-while [ "$attempt" -lt 30 ]; do
-  if docker inspect --format='{{.State.Health.Status}}' rw10plus-v03 2>/dev/null | grep -q healthy; then
+while [ "$attempt" -lt 90 ]; do
+  HEALTH_STATUS="$(docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' rw10plus-v03 2>/dev/null || true)"
+  if [ "$HEALTH_STATUS" = "healthy" ] || python3 - <<'PY' >/dev/null 2>&1
+import json
+import urllib.request
+with urllib.request.urlopen("http://127.0.0.1:8188/api/health", timeout=2) as response:
+    body = json.loads(response.read())
+    raise SystemExit(0 if response.status == 200 and body.get("version") == "0.3.0" else 1)
+PY
+  then
     if ! python3 tests/deployment_check.py; then
       echo "ERROR: verifikasi tampilan/aset gagal"
       docker compose logs --tail=100
@@ -60,12 +68,12 @@ while [ "$attempt" -lt 30 ]; do
     echo "Buka: http://192.168.100.50:8188"
     docker compose ps
     exit 0
-fi
+  fi
   attempt=$((attempt + 1))
   sleep 1
 done
 
-echo "ERROR: aplikasi belum sehat setelah 30 detik"
+echo "ERROR: aplikasi belum sehat setelah 90 detik"
 docker compose ps
 docker compose logs --tail=100
 docker compose down
