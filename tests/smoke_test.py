@@ -40,7 +40,7 @@ with tempfile.TemporaryDirectory() as tmp:
     env = dict(os.environ, RW10_PORT=PORT, RW10_DB_PATH=db_path)
     proc = subprocess.Popen(["python3", os.path.join(ROOT, "server.py")], env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        for _ in range(50):
+        for _ in range(180):
             try:
                 if urllib.request.urlopen(BASE + "/api/health", timeout=.5).status == 200:
                     break

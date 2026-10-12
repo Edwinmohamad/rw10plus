@@ -36,6 +36,6 @@ fi
 
 gradle --no-daemon clean lintRelease assembleRelease -PRW10_SERVER_URL=http://192.168.100.50:8188/
 mkdir -p output
-cp app/build/outputs/apk/release/app-release.apk output/RW10PLUS-INTERNAL-v0.3.0.apk
-sha256sum output/RW10PLUS-INTERNAL-v0.3.0.apk
-echo "APK berhasil: $(pwd)/output/RW10PLUS-INTERNAL-v0.3.0.apk"
+cp app/build/outputs/apk/release/app-release.apk output/RW10PLUS-INTERNAL-v0.4.0.apk
+sha256sum output/RW10PLUS-INTERNAL-v0.4.0.apk
+echo "APK berhasil: $(pwd)/output/RW10PLUS-INTERNAL-v0.4.0.apk"

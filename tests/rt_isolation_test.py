@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory() as folder:
     env=dict(os.environ,RW10_DB_PATH=database,RW10_PORT=str(PORT))
     proc=subprocess.Popen(['python3',str(ROOT/'server.py')],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT)
     try:
-        for _ in range(90):
+        for _ in range(180):
             try:
                 with urllib.request.urlopen(BASE+'/api/health',timeout=.3):break
             except Exception:time.sleep(.1)

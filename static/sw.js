@@ -1,5 +1,5 @@
-const CACHE='rw10plus-v030';
-const ASSETS=['/','/styles.css?v=0.3.0','/app.js?v=0.3.0','/manifest.webmanifest?v=0.3.0','/icon.svg','/icon-192.png','/icon-512.png'];
+const CACHE='rw10plus-v040-apple';
+const ASSETS=['/','/styles.css?v=0.3.0','/apple-ui.css?v=1.0.0','/app.js?v=0.3.0','/manifest.webmanifest?v=0.3.0','/icon.svg','/icon-192.png','/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())
 ));

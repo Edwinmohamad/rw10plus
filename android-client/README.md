@@ -16,4 +16,4 @@ cd android-client
 ./build-apk.sh
 ```
 
-Output: `output/RW10PLUS-INTERNAL-v0.3.0.apk`.
+Output: `output/RW10PLUS-INTERNAL-v0.4.0.apk`.

@@ -14,8 +14,8 @@ android {
         applicationId = "id.rw10.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "0.3.0-internal"
+        versionCode = 5
+        versionName = "0.4.0-internal"
         buildConfigField("String", "SERVER_URL", "\"${serverUrl.get()}\"")
     }
 
