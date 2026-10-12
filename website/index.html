@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Portal publik RW10+ Pabuaran untuk layanan, agenda, UMKM, kontak, dan akses aplikasi warga." />
+    <meta name="description" content="Website publik RW10+ Pabuaran untuk profil kampung, layanan warga, agenda, UMKM, kontak, dan akses aplikasi internal." />
     <title>RW10+ Pabuaran</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="nav">
-      <a class="brand" href="#beranda"><span>10+</span><strong>RW10+ Pabuaran</strong></a>
+      <a class="brand" href="#beranda" aria-label="RW10+ Pabuaran"><span>10+</span><strong>RW10+ Pabuaran</strong></a>
       <nav aria-label="Navigasi utama">
         <a href="#profil">Profil</a>
         <a href="#layanan">Layanan</a>
@@ -18,7 +18,7 @@
         <a href="#kontak">Kontak</a>
       </nav>
       <div class="actions">
-        <button class="theme" type="button" data-theme-toggle aria-label="Ganti mode"></button>
+        <button class="theme" type="button" data-theme-toggle aria-label="Ganti mode tampilan"><span></span></button>
         <a class="btn small" href="http://192.168.100.50:8188">Masuk Aplikasi</a>
       </div>
     </header>
@@ -27,62 +27,114 @@
       <section class="hero">
         <div class="copy">
           <p class="eyebrow">Kp Pabuaran · Desa Cicadas</p>
-          <h1>Portal Digital Warga RW 10</h1>
-          <p class="lead">Website publik untuk informasi layanan, agenda, UMKM, kontak penting, dan pintu masuk ke aplikasi internal RW10+.</p>
+          <h1>Website publik untuk warga RW 10.</h1>
+          <p class="lead">Halaman depan RW10+ dibuat bersih, cepat, dan mudah dibaca. Informasi umum ada di website, fitur internal tetap aman di aplikasi warga.</p>
           <div class="cta">
             <a class="btn primary" href="http://192.168.100.50:8188">Masuk Aplikasi</a>
             <a class="btn" href="#layanan">Lihat Layanan</a>
           </div>
+          <div class="signal" aria-label="Ringkasan wilayah">
+            <span>RT 01</span><span>RT 02</span><span>RT 03</span><span>RT 04</span>
+          </div>
         </div>
-        <aside class="showcase" aria-label="Ringkasan website RW10+">
-          <div class="status"><i></i><span>Website publik aktif</span></div>
-          <div class="tiles">
-            <article><b>Layanan</b><small>Surat, iuran, laporan</small></article>
-            <article><b>Agenda</b><small>Rapat, kerja bakti, posyandu</small></article>
-            <article><b>UMKM</b><small>Usaha warga RW 10</small></article>
-            <article><b>Kontak</b><small>Informasi pengurus</small></article>
+
+        <aside class="showcase" aria-label="Tampilan ringkas RW10+">
+          <div class="photo-card">
+            <div class="photo-top">
+              <span class="live-dot"></span>
+              <span>Portal RW aktif</span>
+            </div>
+            <div class="kampung-art" aria-hidden="true">
+              <span class="sun"></span>
+              <span class="hill one"></span>
+              <span class="hill two"></span>
+              <span class="house a"></span>
+              <span class="house b"></span>
+              <span class="road"></span>
+            </div>
+            <div class="photo-caption">
+              <small>Kp Pabuaran</small>
+              <strong>RW10+ Digital Hub</strong>
+            </div>
+          </div>
+
+          <div class="mini-grid">
+            <article><span class="mark blue">01</span><b>Layanan</b><small>Surat, laporan, iuran</small></article>
+            <article><span class="mark green">02</span><b>Agenda</b><small>Rapat, posyandu, kerja bakti</small></article>
+            <article><span class="mark amber">03</span><b>UMKM</b><small>Etalase usaha warga</small></article>
           </div>
         </aside>
       </section>
 
-      <section class="section split" id="profil">
-        <div><p class="eyebrow">Profil</p><h2>RW10+ Pabuaran dibuat untuk halaman depan warga.</h2></div>
-        <p>Kanal publik ini dipisahkan dari aplikasi internal. Website menampilkan informasi umum, sementara fitur login, SOS, surat, CCTV, iuran, dan admin tetap berada di aplikasi RW10+.</p>
+      <section class="intro" id="profil">
+        <div>
+          <p class="eyebrow">Profil</p>
+          <h2>Website beda dengan APK.</h2>
+        </div>
+        <p>Website ini fokus untuk publik: profil wilayah, kabar terbaru, agenda, UMKM, dan kontak. APK RW10+ tetap menjadi ruang internal untuk login warga, SOS, surat online, CCTV, iuran, dan admin RT/RW.</p>
       </section>
 
       <section class="section" id="layanan">
-        <p class="eyebrow">Layanan</p>
-        <h2>Akses informasi tanpa perlu login.</h2>
+        <div class="section-head">
+          <p class="eyebrow">Layanan warga</p>
+          <h2>Informasi cepat tanpa login.</h2>
+        </div>
         <div class="cards">
-          <article><span class="icon blue">S</span><h3>Surat pengantar</h3><p>Info alur permohonan dan pintu masuk ke aplikasi warga.</p></article>
-          <article><span class="icon green">I</span><h3>Iuran warga</h3><p>Pengingat kas, keamanan, sampah, dan pembayaran.</p></article>
-          <article><span class="icon amber">L</span><h3>Laporan lingkungan</h3><p>Informasi kanal laporan fasilitas dan kebersihan.</p></article>
-          <article><span class="icon rose">D</span><h3>Nomor penting</h3><p>Kontak RT/RW, keamanan, dan bantuan warga.</p></article>
+          <article><span class="icon blue">S</span><h3>Surat Pengantar</h3><p>Alur permohonan surat dan pintu masuk aplikasi warga.</p></article>
+          <article><span class="icon green">I</span><h3>Iuran & Kas</h3><p>Info kanal pembayaran kas, sampah, dan keamanan.</p></article>
+          <article><span class="icon amber">A</span><h3>Agenda RW</h3><p>Rapat, kerja bakti, posyandu, dan kegiatan warga.</p></article>
+          <article><span class="icon rose">K</span><h3>Kontak Penting</h3><p>Pengurus RT/RW, keamanan, dan nomor darurat.</p></article>
+        </div>
+      </section>
+
+      <section class="story">
+        <div class="story-copy">
+          <p class="eyebrow">Kabar RW 10</p>
+          <h2>Tampilan website dibuat publik, ringan, dan rapi.</h2>
+          <p>Konten bisa diisi bertahap: foto kampung, fasilitas umum, daftar pengurus, agenda, dan katalog UMKM warga.</p>
+        </div>
+        <div class="gallery" aria-label="Ilustrasi area RW 10">
+          <div class="gallery-card gate"><span>Gerbang RW</span></div>
+          <div class="gallery-card warga"><span>Kegiatan Warga</span></div>
+          <div class="gallery-card umkm"><span>UMKM</span></div>
         </div>
       </section>
 
       <section class="section agenda" id="agenda">
-        <p class="eyebrow">Agenda</p>
-        <h2>Kegiatan RW yang mudah dipantau.</h2>
+        <div class="section-head">
+          <p class="eyebrow">Agenda</p>
+          <h2>Kegiatan yang mudah dipantau.</h2>
+        </div>
         <div class="rows">
-          <article><time>Bulanan</time><div><h3>Rapat koordinasi RT/RW</h3><p>Agenda koordinasi dan tindak lanjut kebutuhan warga.</p></div></article>
-          <article><time>Rutin</time><div><h3>Kerja bakti lingkungan</h3><p>Informasi kebersihan, fasilitas umum, dan gotong royong.</p></div></article>
-          <article><time>Publik</time><div><h3>Posyandu dan kegiatan warga</h3><p>Pengumuman kegiatan sosial yang dapat dilihat semua warga.</p></div></article>
+          <article><time>Bulanan</time><div><h3>Rapat koordinasi RT/RW</h3><p>Koordinasi pengurus dan tindak lanjut kebutuhan warga.</p></div></article>
+          <article><time>Rutin</time><div><h3>Kerja bakti lingkungan</h3><p>Jadwal kebersihan, fasilitas umum, dan gotong royong.</p></div></article>
+          <article><time>Publik</time><div><h3>Posyandu dan kegiatan sosial</h3><p>Pengumuman kegiatan warga yang bisa dilihat umum.</p></div></article>
         </div>
       </section>
 
-      <section class="section band" id="umkm">
-        <div><p class="eyebrow">UMKM</p><h2>Etalase usaha warga.</h2><p>Website dapat menampilkan kategori kuliner, jasa, warung, dan usaha kreatif warga RW 10 tanpa membuka data privat aplikasi.</p></div>
+      <section class="band" id="umkm">
+        <div>
+          <p class="eyebrow">UMKM</p>
+          <h2>Etalase usaha warga RW 10.</h2>
+          <p>Katalog UMKM dapat diisi kuliner, jasa, warung, dan usaha kreatif warga tanpa membuka data privat aplikasi.</p>
+        </div>
         <div class="chips"><span>Kuliner</span><span>Jasa</span><span>Warung</span><span>Kreatif</span></div>
       </section>
 
-      <section class="section contact" id="kontak">
-        <div><p class="eyebrow">Kontak</p><h2>Masuk ke aplikasi untuk layanan internal.</h2><p>Gunakan website untuk informasi publik dan aplikasi untuk transaksi warga.</p></div>
-        <a class="btn primary" href="http://192.168.100.50:8188">Masuk Aplikasi RW10+</a>
+      <section class="contact" id="kontak">
+        <div>
+          <p class="eyebrow">Kontak</p>
+          <h2>Untuk layanan internal, masuk ke aplikasi RW10+.</h2>
+          <p>Website untuk publik. Aplikasi untuk data warga, pengajuan, SOS, dan admin.</p>
+        </div>
+        <a class="btn primary" href="http://192.168.100.50:8188">Buka Aplikasi</a>
       </section>
     </main>
 
-    <footer>RW10+ Pabuaran <span>Kp Pabuaran · Desa Cicadas · Gunung Putri</span></footer>
+    <footer>
+      <strong>RW10+ Pabuaran</strong>
+      <span>Kp Pabuaran · Desa Cicadas · Kec. Gunung Putri · Kab. Bogor</span>
+    </footer>
     <script src="./app.js"></script>
   </body>
 </html>
