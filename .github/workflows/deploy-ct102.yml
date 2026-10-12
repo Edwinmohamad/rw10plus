@@ -8,6 +8,7 @@ on:
     paths:
       - "server.py"
       - "static/**"
+      - "website/**"
       - "Dockerfile"
       - "compose.yaml"
       - "install.sh"
