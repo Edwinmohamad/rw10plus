@@ -18,3 +18,17 @@ services:
     pids_limit: 128
     mem_limit: 512m
     cpus: 1.0
+
+  rw10plus-website:
+    image: nginx:1.27-alpine
+    container_name: rw10plus-website
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./website:/usr/share/nginx/html:ro
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 128m
+    cpus: 0.25
