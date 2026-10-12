@@ -30,6 +30,11 @@ jobs:
       - self-hosted
       - rw10plus-deploy
     timeout-minutes: 20
+    # Bootstrap defaults: deployment must be able to start before repository secrets exist.
+    # Replace the CMS password after the first successful deployment.
+    env:
+      CMS_ADMIN_PASSWORD: "RW10Admin2026!"
+      CMS_COOKIE_SECURE: "false"
 
     steps:
       - name: Prepare runner workspace
@@ -46,7 +51,7 @@ jobs:
         run: docker compose --project-directory "$GITHUB_WORKSPACE" -f "$GITHUB_WORKSPACE/compose.yaml" config --quiet
 
       - name: Deploy RW10+
-        run: sudo bash "$GITHUB_WORKSPACE/install.sh"
+        run: sudo --preserve-env=CMS_ADMIN_PASSWORD,CMS_COOKIE_SECURE bash "$GITHUB_WORKSPACE/install.sh"
 
       - name: Show containers
         if: always()

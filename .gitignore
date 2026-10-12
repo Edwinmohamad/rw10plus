@@ -35,3 +35,6 @@ data/
 *.log
 .pytest_cache/
 .coverage
+
+# CMS runtime data
+cms-data/

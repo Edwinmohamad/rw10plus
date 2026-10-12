@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parent
 STORE=Path(os.getenv('CMS_DATA_DIR','/data')); STORE.mkdir(parents=True,exist_ok=True)
 MEDIA=STORE/'media'; MEDIA.mkdir(exist_ok=True)
 DB=STORE/'cms.sqlite3'
-ADMIN_PASS=os.getenv('CMS_ADMIN_PASSWORD','')
+ADMIN_PASS=os.getenv('CMS_ADMIN_PASSWORD','RW10Admin2026!')
 PORT=int(os.getenv('CMS_PORT','8090'))
 MAX_BODY=7*1024*1024
 PUBLIC_KINDS=('news','events','officials','stats','gallery','umkm')

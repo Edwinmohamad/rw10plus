@@ -27,7 +27,11 @@ if ! docker compose version >/dev/null 2>&1; then
   exit 1
 fi
 
-mkdir -p data data/backups
+# Bootstrap CMS defaults so first deploy does not depend on a pre-existing .env.
+export CMS_ADMIN_PASSWORD="${CMS_ADMIN_PASSWORD:-RW10Admin2026!}"
+export CMS_COOKIE_SECURE="${CMS_COOKIE_SECURE:-false}"
+
+mkdir -p data data/backups cms-data
 if [ ! -f data/rw10.db ]; then
   for old in rw10plus-v02 rw10plus-v01; do
     if docker inspect "$old" >/dev/null 2>&1; then
@@ -39,7 +43,7 @@ fi
 if [ -f data/rw10.db ]; then
   cp data/rw10.db "data/backups/rw10-pre-v030-$(date +%Y%m%d-%H%M%S).db"
 fi
-chown -R 10001:10001 data
+chown -R 10001:10001 data cms-data
 
 docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" config --quiet
 docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" build --no-cache

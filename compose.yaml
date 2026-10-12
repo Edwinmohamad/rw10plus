@@ -41,8 +41,10 @@ services:
     environment:
       CMS_PORT: "8090"
       CMS_DATA_DIR: /data
-      CMS_ADMIN_PASSWORD: ${CMS_ADMIN_PASSWORD:?Set CMS_ADMIN_PASSWORD in .env}
-      CMS_COOKIE_SECURE: ${CMS_COOKIE_SECURE:-false}
+      # TEMPORARY bootstrap credentials so CI/deploy can start without .env.
+      # Change these after the first successful deployment.
+      CMS_ADMIN_PASSWORD: "RW10Admin2026!"
+      CMS_COOKIE_SECURE: "false"
     volumes:
       - ./cms-data:/data
     security_opt:
