@@ -65,7 +65,7 @@ with tempfile.TemporaryDirectory() as tmp:
 
         _, wb = request(warga, "/api/bootstrap")
         assert wb["user"]["role"] == "warga" and not wb["capabilities"]["can_respond_sos"]
-        assert wb["market"] and wb["voting"] and len(wb["cameras"]) == 4
+        assert wb["market"] and wb["voting"] and len(wb["cameras"]) == 2
         _, sb = request(satpam, "/api/bootstrap")
         assert sb["capabilities"]["can_patrol"] and sb["invoices"] == [] and sb["letters"] == []
 
@@ -102,8 +102,9 @@ with tempfile.TemporaryDirectory() as tmp:
 
         status, guest = request(warga, "/api/guest-passes", "POST", {"guest_name": "Budi", "purpose": "Berkunjung", "duration_hours": 2})
         assert status == 201 and guest["token"]
-        assert request(satpam, "/api/guest-passes/scan", "POST", {"token": guest["token"]})[0] == 200
-        assert request(satpam, "/api/guest-passes/scan", "POST", {"token": guest["token"]})[0] == 409
+        assert request(satpam, "/api/guest-passes/scan", "POST", {"token": guest["token"]})[0] == 403
+        assert request(rw, "/api/guest-passes/scan", "POST", {"token": guest["token"]})[0] == 200
+        assert request(rw, "/api/guest-passes/scan", "POST", {"token": guest["token"]})[0] == 409
         assert request(satpam, "/api/patrol/check-in", "POST", {"checkpoint": "Gerbang Utama"})[0] == 201
 
         vote_id = wb["voting"][0]["id"]

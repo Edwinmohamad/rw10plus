@@ -447,8 +447,10 @@ class App(BaseHTTPRequestHandler):
         )
 
     def allowed_row(self, user, owner_id=None, rt=None):
-        if user["role"] in {"pengurus_rw", "satpam_rw"}:
+        if user["role"] == "pengurus_rw":
             return True
+        if user["role"] == "satpam_rw":
+            return rt == user["rt"]
         if user["role"] == "ketua_rt":
             return rt == user["rt"]
         return owner_id == user["id"]
@@ -574,7 +576,7 @@ class App(BaseHTTPRequestHandler):
                     continue
                 if item["mode"] == "silent" and user["id"] != item["user_id"] and user["role"] not in {"satpam_rw", "pengurus_rw"}:
                     continue
-                if user["role"] == "ketua_rt" and item["rt"] != user["rt"]:
+                if user["role"] != "pengurus_rw" and item["rt"] != user["rt"] and not (user["role"] == "satpam_rw" and item["scope"] in {"rw", "petugas"}):
                     continue
                 events.append(item)
             invoice_rows = conn.execute(
@@ -590,10 +592,10 @@ class App(BaseHTTPRequestHandler):
             ).fetchall()
             guest_passes = [dict(row) for row in pass_rows if self.allowed_row(user, row["user_id"], row["rt"])]
             patrol = [dict(row) for row in conn.execute(
-                "SELECT p.*,u.name guard_name FROM patrol_logs p JOIN users u ON u.id=p.guard_id ORDER BY p.id DESC LIMIT 20"
+                "SELECT p.*,u.name guard_name,u.rt FROM patrol_logs p JOIN users u ON u.id=p.guard_id WHERE (? = 'pengurus_rw' OR u.rt=?) ORDER BY p.id DESC LIMIT 20", (user["role"], user["rt"])
             )]
             market = [dict(row) for row in conn.execute(
-                "SELECT m.*,u.name owner_name,u.rt FROM market_items m JOIN users u ON u.id=m.owner_id WHERE m.active=1 ORDER BY m.id DESC"
+                "SELECT m.*,u.name owner_name,u.rt FROM market_items m JOIN users u ON u.id=m.owner_id WHERE m.active=1 AND (? = 'pengurus_rw' OR u.rt=?) ORDER BY m.id DESC", (user["role"], user["rt"])
             )]
             voting = []
             for row in conn.execute("SELECT * FROM voting_sessions WHERE status='open' ORDER BY closes_at,id DESC"):
@@ -614,7 +616,7 @@ class App(BaseHTTPRequestHandler):
                 "can_scan_guest": user["role"] in {"satpam_rw", "pengurus_rw"},
                 "can_patrol": user["role"] == "satpam_rw",
             },
-            "cameras": cameras,
+            "cameras": [camera for camera in cameras if user["role"] == "pengurus_rw" or camera["rt"] == user["rt"]],
             "complaints": complaints,
             "events": events,
             "invoices": invoices,
@@ -647,7 +649,7 @@ class App(BaseHTTPRequestHandler):
                 continue
             if item["mode"] == "silent" and user["id"] != item["user_id"] and user["role"] not in {"satpam_rw", "pengurus_rw"}:
                 continue
-            if user["role"] == "ketua_rt" and item["rt"] != user["rt"]:
+            if user["role"] != "pengurus_rw" and item["rt"] != user["rt"] and not (user["role"] == "satpam_rw" and item["scope"] in {"rw", "petugas"}):
                 continue
             events.append(item)
         return self.json_response({"ok": True, "events": events})
@@ -744,9 +746,9 @@ class App(BaseHTTPRequestHandler):
             event = conn.execute("SELECT * FROM sos_events WHERE id=?", (event_id,)).fetchone()
             if not event or event["status"] not in {"active", "acknowledged", "responding"}:
                 return self.json_response({"ok": False, "error": "SOS belum dikirim atau sudah tidak aktif"}, 409)
-            if user["role"] == "ketua_rt":
+            if user["role"] != "pengurus_rw":
                 reporter = conn.execute("SELECT rt FROM users WHERE id=?", (event["user_id"],)).fetchone()
-                if not reporter or reporter["rt"] != user["rt"]:
+                if not reporter or (reporter["rt"] != user["rt"] and not (user["role"] == "satpam_rw" and event["scope"] in {"rw", "petugas"})):
                     return self.json_response({"ok": False, "error": "SOS berada di luar RT Anda"}, 403)
             conn.execute(
                 "INSERT INTO sos_responses(sos_id,user_id,action,created_at) VALUES(?,?,?,?) ON CONFLICT(sos_id,user_id) DO UPDATE SET action=excluded.action,created_at=excluded.created_at",
@@ -772,12 +774,12 @@ class App(BaseHTTPRequestHandler):
         if code not in {"aman", "ditangani", "false_alarm", "dirujuk"}:
             return self.json_response({"ok": False, "error": "Kode penyelesaian tidak valid"}, 400)
         with db() as conn:
-            event = conn.execute("SELECT s.status,u.rt FROM sos_events s JOIN users u ON u.id=s.user_id WHERE s.id=?", (event_id,)).fetchone()
+            event = conn.execute("SELECT s.status,s.scope,u.rt FROM sos_events s JOIN users u ON u.id=s.user_id WHERE s.id=?", (event_id,)).fetchone()
             if not event:
                 return self.json_response({"ok": False, "error": "SOS tidak ditemukan"}, 404)
             if event["status"] not in {"active", "acknowledged", "responding"}:
                 return self.json_response({"ok": False, "error": "SOS tidak dapat ditutup"}, 409)
-            if user["role"] == "ketua_rt" and event["rt"] != user["rt"]:
+            if user["role"] != "pengurus_rw" and event["rt"] != user["rt"] and not (user["role"] == "satpam_rw" and event["scope"] in {"rw", "petugas"}):
                 return self.json_response({"ok": False, "error": "SOS berada di luar RT Anda"}, 403)
             conn.execute("UPDATE sos_events SET status='resolved',resolved_at=?,resolution_code=? WHERE id=?", (now_iso(), code, event_id))
             self.audit(conn, user, "RESOLVE", "emergency", event_id, code)
@@ -964,6 +966,8 @@ class App(BaseHTTPRequestHandler):
             ).fetchone()
             if not row:
                 return self.json_response({"ok": False, "error": "Guest Pass tidak ditemukan"}, 404)
+            if user["role"] != "pengurus_rw" and row["rt"] != user["rt"]:
+                return self.json_response({"ok": False, "error": "Guest Pass berada di luar RT Anda"}, 403)
             if row["status"] != "active":
                 return self.json_response({"ok": False, "error": "Guest Pass sudah digunakan atau dicabut"}, 409)
             if row["valid_until"] < int(time.time()):
