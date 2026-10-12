@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" role="img" aria-labelledby="t d">
+<title id="t">Identitas wilayah Kabupaten Bogor</title><desc id="d">Fallback grafis saat lambang resmi daring tidak dapat dimuat.</desc>
+<path d="M18 14h124v102c0 37-26 60-62 72-36-12-62-35-62-72Z" fill="#f4cc18" stroke="#17212b" stroke-width="7"/>
+<path d="M40 50 80 27l40 23-15 76H55Z" fill="#0b8b54" stroke="#fff" stroke-width="5"/>
+<path d="M80 45 57 84h46Z" fill="#f4cc18" stroke="#17212b" stroke-width="4"/>
+<path d="M50 99c20-10 40 10 60 0M50 109c20-10 40 10 60 0" fill="none" stroke="#17212b" stroke-width="4"/>
+<text x="80" y="153" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#17212b">KAB. BOGOR</text>
+<text x="80" y="172" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#17212b">IDENTITAS WILAYAH</text>
+</svg>

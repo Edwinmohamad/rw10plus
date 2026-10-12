@@ -2,10 +2,10 @@
   'use strict';
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const rtData = {
-    '01': {name:'Wilayah RT 01', description:'Informasi publik RT01 RW10 Pabuaran. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT01'},
-    '02': {name:'Wilayah RT 02', description:'Informasi publik RT02 RW10 Pabuaran. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT02'},
-    '03': {name:'Wilayah RT 03', description:'Informasi publik RT03 RW10 Pabuaran. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT03'},
-    '04': {name:'GG H Kape', description:'RT04 RW10 Pabuaran. Kenali profil lingkungan, pengurus, dan kegiatan yang sudah dipublikasikan.', photo:'./assets/rt04-gg-h-kape.webp', alt:'Ilustrasi gerbang GG H Kape RT04'}
+    '01': {name:'Wilayah RT 01', description:'Informasi publik RT01 RW10 Desa Cicadas. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT01'},
+    '02': {name:'Wilayah RT 02', description:'Informasi publik RT02 RW10 Desa Cicadas. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT02'},
+    '03': {name:'Wilayah RT 03', description:'Informasi publik RT03 RW10 Desa Cicadas. Dokumentasi wilayah akan ditampilkan setelah dikonfirmasi pengurus.', photo:'./assets/rt-public-placeholder.svg', alt:'Ilustrasi sementara untuk RT03'},
+    '04': {name:'GG H Kape', description:'RT04 RW10 Desa Cicadas. Kenali profil lingkungan, pengurus, dan kegiatan yang sudah dipublikasikan.', photo:'./assets/rt04-gg-h-kape.webp', alt:'Ilustrasi gerbang GG H Kape RT04'}
   };
   const tabs = [...document.querySelectorAll('[data-choose-rt]')];
   const photo = document.querySelector('#preview-rt-photo');

@@ -14,7 +14,7 @@ def get(path):
 status, kind, body = get("/api/health")
 health = json.loads(body)
 assert status == 200 and kind == "application/json" and health["version"] == "0.3.0"
-for path, marker in (("/styles.css?v=0.3.0", b"html.elderly"), ("/app.js?v=0.3.0", b"cancel_deadline"), ("/", b'id="view-operations"')):
+for path, marker in (("/styles.css?v=11.0.0", b"html.elderly"), ("/app.js?v=11.0.0", b"cancel_deadline"), ("/", b'id="view-operations"')):
     status, _, body = get(path)
     assert status == 200 and marker in body
 try:

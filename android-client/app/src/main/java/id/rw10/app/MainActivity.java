@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.net.http.SslError;
 import android.webkit.WebResourceError;
@@ -33,11 +34,7 @@ public class MainActivity extends ComponentActivity {
                 handleBackNavigation();
             }
         });
-        getWindow().setStatusBarColor(Color.rgb(245,247,251));
-        getWindow().setNavigationBarColor(Color.rgb(245,247,251));
-        int systemUi = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        if (android.os.Build.VERSION.SDK_INT >= 27) systemUi |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-        getWindow().getDecorView().setSystemUiVisibility(systemUi);
+        applyNativeTheme(false);
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
@@ -56,6 +53,7 @@ public class MainActivity extends ComponentActivity {
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
+        webView.addJavascriptInterface(new ThemeBridge(), "AndroidTheme");
         webView.setWebViewClient(new SecureClient());
 
         errorView = buildErrorView();
@@ -69,14 +67,33 @@ public class MainActivity extends ComponentActivity {
 
     private LinearLayout buildErrorView() {
         LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL); panel.setGravity(android.view.Gravity.CENTER); panel.setPadding(42,42,42,42);
-        TextView mark = new TextView(this); mark.setText("RW10+"); mark.setTextColor(Color.rgb(0,113,227)); mark.setTextSize(32); mark.setTypeface(null, android.graphics.Typeface.BOLD); panel.addView(mark);
-        TextView title = new TextView(this); title.setText("Tidak dapat terhubung ke RW10+"); title.setTextColor(Color.rgb(29,29,31)); title.setTextSize(20); title.setGravity(android.view.Gravity.CENTER); title.setPadding(0,28,0,8); panel.addView(title);
-        TextView info = new TextView(this); info.setText("Periksa koneksi jaringan, lalu coba lagi. Jika tetap gagal, hubungi pengurus RW10."); info.setTextColor(Color.rgb(110,110,115)); info.setTextSize(14); info.setGravity(android.view.Gravity.CENTER); info.setPadding(0,0,0,24); panel.addView(info);
-        Button retry = new Button(this); retry.setText("Coba lagi"); retry.setTextColor(Color.WHITE); retry.setBackgroundColor(Color.rgb(0,113,227)); retry.setOnClickListener(v -> loadApp()); panel.addView(retry, new LinearLayout.LayoutParams(-1,56)); panel.setVisibility(View.GONE); return panel;
+        TextView mark = new TextView(this); mark.setText("CICADAS DIGITAL"); mark.setTextColor(Color.rgb(8,116,67)); mark.setTextSize(32); mark.setTypeface(null, android.graphics.Typeface.BOLD); panel.addView(mark);
+        TextView title = new TextView(this); title.setText("Tidak dapat terhubung ke Cicadas Digital"); title.setTextColor(Color.rgb(29,29,31)); title.setTextSize(20); title.setGravity(android.view.Gravity.CENTER); title.setPadding(0,28,0,8); panel.addView(title);
+        TextView info = new TextView(this); info.setText("Periksa koneksi jaringan, lalu coba lagi. Jika tetap gagal, hubungi pengurus RW10 Desa Cicadas."); info.setTextColor(Color.rgb(110,110,115)); info.setTextSize(14); info.setGravity(android.view.Gravity.CENTER); info.setPadding(0,0,0,24); panel.addView(info);
+        Button retry = new Button(this); retry.setText("Coba lagi"); retry.setTextColor(Color.WHITE); retry.setBackgroundColor(Color.rgb(8,116,67)); retry.setOnClickListener(v -> loadApp()); panel.addView(retry, new LinearLayout.LayoutParams(-1,56)); panel.setVisibility(View.GONE); return panel;
     }
 
     private boolean sameServer(Uri uri) { return uri != null && serverUri.getHost() != null && serverUri.getHost().equalsIgnoreCase(uri.getHost()) && serverUri.getPort() == uri.getPort(); }
     private void showError() { webView.setVisibility(View.GONE); errorView.setVisibility(View.VISIBLE); }
+
+    private void applyNativeTheme(boolean dark) {
+        int barColor = dark ? Color.rgb(9, 13, 19) : Color.rgb(245, 247, 251);
+        getWindow().setStatusBarColor(barColor);
+        getWindow().setNavigationBarColor(barColor);
+        int flags = 0;
+        if (!dark) {
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            if (android.os.Build.VERSION.SDK_INT >= 27) flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        }
+        getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
+
+    private final class ThemeBridge {
+        @JavascriptInterface public void setTheme(String theme) {
+            final boolean dark = "dark".equalsIgnoreCase(theme);
+            runOnUiThread(() -> applyNativeTheme(dark));
+        }
+    }
 
     private final class SecureClient extends WebViewClient {
         @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

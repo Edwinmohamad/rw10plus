@@ -51,9 +51,9 @@ with tempfile.TemporaryDirectory() as tmp:
 
         anonymous = client()
         status, health = request(anonymous, "/api/health")
-        assert status == 200 and health["version"] == "0.3.0" and health["toa_mode"] == "simulation"
+        assert status == 200 and health["version"] == "0.6.0" and health["toa_mode"] == "simulation"
         assert request(anonymous, "/api/bootstrap")[0] == 401
-        for asset in ("/", "/styles.css?v=0.3.0", "/app.js?v=0.3.0", "/manifest.webmanifest"):
+        for asset in ("/", "/styles.css?v=12.0.0", "/apk-apple.css?v=12.0.0", "/app.js?v=12.0.0", "/manifest.webmanifest?v=12.0.0", "/app-hero.webp"):
             with urllib.request.urlopen(BASE + asset, timeout=3) as response:
                 assert response.status == 200 and response.read()
         assert request(anonymous, "/missing.css")[0] == 404
@@ -113,7 +113,15 @@ with tempfile.TemporaryDirectory() as tmp:
         status, pref = request(warga, "/api/preferences", "POST", {"theme": "dark", "accessibility_mode": True})
         assert status == 200 and pref["theme"] == "dark" and pref["accessibility_mode"] == 1
 
-        print("SMOKE TEST OK: auth/RBAC, SOS, laporan, iuran, surat, Guest Pass, patroli, voting, preferensi")
+        status, wifi = request(warga, "/api/wifi-student/register", "POST", {
+            "full_name": "Ahmad Pelajar", "school_name": "SMPN 1 Gunung Putri", "class_name": "9A",
+            "student_card_number": "SISWA-001", "phone": "081200000001", "address": "Rumah 12, RT 01"
+        })
+        assert status == 201 and wifi["registration"]["status"] == "menunggu_verifikasi"
+        _, wb2 = request(warga, "/api/bootstrap")
+        assert wb2["wifi_registration"]["school_name"] == "SMPN 1 Gunung Putri"
+
+        print("SMOKE TEST OK: auth/RBAC, SOS, laporan, iuran, surat, Guest Pass, patroli, voting, preferensi, WiFi Pelajar")
     finally:
         proc.terminate()
         proc.wait(timeout=5)

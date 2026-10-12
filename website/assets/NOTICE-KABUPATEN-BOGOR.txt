@@ -1,0 +1,5 @@
+Lambang Kabupaten Bogor
+Primary display source: https://upload.wikimedia.org/wikipedia/commons/3/3b/Lambang_Kabupaten_Bogor.svg
+Wikimedia Commons file page: https://commons.wikimedia.org/wiki/File:Lambang_Kabupaten_Bogor.svg
+Author/source identified there as Pemerintah Kabupaten Bogor, based on Peraturan Daerah Kabupaten Bogor Nomor 2 Tahun 1995.
+The local kabupaten-bogor-fallback.svg is NOT the official emblem; it is only a connectivity fallback so the layout does not show a broken image when the remote official emblem is unavailable.
