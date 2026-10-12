@@ -216,6 +216,20 @@ def init_db():
               active INTEGER NOT NULL DEFAULT 1,
               created_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS wifi_student_registrations (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+              full_name TEXT NOT NULL,
+              school_name TEXT NOT NULL,
+              class_name TEXT NOT NULL,
+              student_card_number TEXT NOT NULL DEFAULT '',
+              phone TEXT NOT NULL,
+              address TEXT NOT NULL,
+              rt TEXT NOT NULL,
+              status TEXT NOT NULL DEFAULT 'menunggu_verifikasi',
+              created_at TEXT NOT NULL,
+              updated_at TEXT NOT NULL
+            );
             CREATE TABLE IF NOT EXISTS voting_sessions (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               title TEXT NOT NULL,
@@ -459,7 +473,7 @@ class App(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
         if path == "/api/health":
-            return self.json_response({"ok": True, "service": "RW10+", "version": "0.3.0", "toa_mode": "simulation", "environment": "internal"})
+            return self.json_response({"ok": True, "service": "RW10+", "version": "0.6.0", "toa_mode": "simulation", "environment": "internal"})
         if path == "/api/me":
             user = self.session_user()
             return self.json_response({"ok": bool(user), "user": self.public_user(user) if user else None}, 200 if user else 401)
@@ -515,6 +529,8 @@ class App(BaseHTTPRequestHandler):
             return self.scan_guest_pass(user)
         if path == "/api/patrol/check-in":
             return self.patrol_check_in(user)
+        if path == "/api/wifi-student/register":
+            return self.register_wifi_student(user)
         if path.startswith("/api/voting/") and path.endswith("/vote"):
             return self.cast_vote(user, path.split("/")[3])
         return self.json_response({"ok": False, "error": "Endpoint tidak ditemukan"}, 404)
@@ -606,6 +622,8 @@ class App(BaseHTTPRequestHandler):
             content = [dict(row) for row in conn.execute("SELECT * FROM content WHERE published=1 ORDER BY COALESCE(event_date,created_at) DESC,id DESC")]
             organizations = [dict(row) for row in conn.execute("SELECT * FROM organizations WHERE active=1 ORDER BY id")]
             members = [dict(row) for row in conn.execute("SELECT * FROM organization_members ORDER BY organization_id,sort_order,id")]
+            wifi_row = conn.execute("SELECT * FROM wifi_student_registrations WHERE user_id=?", (user["id"],)).fetchone()
+            wifi_registration = dict(wifi_row) if wifi_row else None
             pending_alerts = sum(1 for event in events if event["status"] in ACTIVE_ALERT_STATES)
         return self.json_response({
             "ok": True,
@@ -628,6 +646,7 @@ class App(BaseHTTPRequestHandler):
             "content": content,
             "organizations": organizations,
             "members": members,
+            "wifi_registration": wifi_registration,
             "stats": {"active_alerts": pending_alerts, "patrol_minutes_ago": 12, "environment_status": "AMAN"},
             "toa_mode": "simulation",
         })
@@ -667,6 +686,34 @@ class App(BaseHTTPRequestHandler):
             conn.execute("UPDATE users SET theme=?,accessibility_mode=? WHERE id=?", (theme, accessibility, user["id"]))
             self.audit(conn, user, "UPDATE_PREFERENCES", "user", user["id"], f"theme={theme},elderly={accessibility}")
         return self.json_response({"ok": True, "theme": theme, "accessibility_mode": accessibility})
+
+    def register_wifi_student(self, user):
+        try:
+            body = self.read_json()
+        except ValueError as exc:
+            return self.json_response({"ok": False, "error": str(exc)}, 400)
+        full_name = str(body.get("full_name", user["name"])).strip()[:100]
+        school_name = str(body.get("school_name", "")).strip()[:120]
+        class_name = str(body.get("class_name", "")).strip()[:60]
+        student_card_number = str(body.get("student_card_number", "")).strip()[:80]
+        phone = str(body.get("phone", user["phone"])).strip()[:30]
+        address = str(body.get("address", user["house"])).strip()[:180]
+        if len(full_name) < 3 or len(school_name) < 3 or len(class_name) < 1 or len(phone) < 8 or len(address) < 3:
+            return self.json_response({"ok": False, "error": "Data pelajar belum lengkap"}, 400)
+        stamp = now_iso()
+        with db() as conn:
+            conn.execute(
+                """INSERT INTO wifi_student_registrations(user_id,full_name,school_name,class_name,student_card_number,phone,address,rt,status,created_at,updated_at)
+                   VALUES(?,?,?,?,?,?,?,?,'menunggu_verifikasi',?,?)
+                   ON CONFLICT(user_id) DO UPDATE SET
+                     full_name=excluded.full_name,school_name=excluded.school_name,class_name=excluded.class_name,
+                     student_card_number=excluded.student_card_number,phone=excluded.phone,address=excluded.address,rt=excluded.rt,
+                     status='menunggu_verifikasi',updated_at=excluded.updated_at""",
+                (user["id"], full_name, school_name, class_name, student_card_number, phone, address, user["rt"], stamp, stamp),
+            )
+            row = conn.execute("SELECT * FROM wifi_student_registrations WHERE user_id=?", (user["id"],)).fetchone()
+            self.audit(conn, user, "REGISTER", "wifi_student", row["id"], f"school={school_name}")
+        return self.json_response({"ok": True, "registration": dict(row)}, 201)
 
     def create_sos(self, user):
         idem = self.headers.get("Idempotency-Key", "").strip()[:120]
@@ -1046,5 +1093,5 @@ class App(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     init_db()
     clean_sessions()
-    print(f"RW10+ v0.4.0 listening on http://{HOST}:{PORT}")
+    print(f"Cicadas Digital v0.6.0 listening on http://{HOST}:{PORT}")
     ThreadingHTTPServer((HOST, PORT), App).serve_forever()

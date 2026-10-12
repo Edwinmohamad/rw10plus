@@ -79,7 +79,7 @@ PY
       docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" logs --tail=100
       exit 1
     fi
-    echo "RW10+ v0.3.0 berhasil dipasang"
+    echo "Cicadas Digital v11 berhasil dipasang"
     echo "Buka: http://192.168.100.50:8188"
     docker compose --project-directory "$APP_DIR" -f "$APP_DIR/compose.yaml" ps
     exit 0
