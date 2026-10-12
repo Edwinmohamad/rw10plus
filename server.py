@@ -1046,5 +1046,5 @@ class App(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     init_db()
     clean_sessions()
-    print(f"RW10+ v0.3.0 listening on http://{HOST}:{PORT}")
+    print(f"RW10+ v0.4.0 listening on http://{HOST}:{PORT}")
     ThreadingHTTPServer((HOST, PORT), App).serve_forever()
