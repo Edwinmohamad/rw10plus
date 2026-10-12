@@ -1,0 +1,13 @@
+<svg width="720" height="480" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="720" height="480" rx="28" fill="#EDF4FF"/>
+<rect x="86" y="252" width="548" height="100" rx="26" fill="#D6E7FF"/>
+<ellipse cx="360" cy="298" rx="210" ry="60" fill="#FFFFFF"/>
+<circle cx="238" cy="230" r="28" fill="#F7C58A"/><path d="M214 256H262C282 256 298 272 298 292V334H178V292C178 272 194 256 214 256Z" fill="#1F5FD6"/>
+<circle cx="336" cy="212" r="28" fill="#FFCEA4"/><path d="M312 238H360C380 238 396 254 396 274V334H276V274C276 254 292 238 312 238Z" fill="#14A46D"/>
+<circle cx="436" cy="226" r="28" fill="#FFD17F"/><path d="M412 252H460C480 252 496 268 496 288V334H376V288C376 268 392 252 412 252Z" fill="#EB8A1D"/>
+<circle cx="534" cy="214" r="28" fill="#F7C58A"/><path d="M510 240H558C578 240 594 256 594 276V334H474V276C474 256 490 240 510 240Z" fill="#7B5CFF"/>
+<rect x="248" y="120" width="220" height="74" rx="18" fill="#FFFFFF"/>
+<rect x="278" y="144" width="160" height="12" rx="6" fill="#D6E7FF"/>
+<rect x="278" y="164" width="120" height="12" rx="6" fill="#D6E7FF"/>
+<text x="44" y="68" fill="#173F90" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Rapat Warga &amp; Pengurus</text>
+</svg>
