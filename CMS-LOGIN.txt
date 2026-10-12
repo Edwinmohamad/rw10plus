@@ -1,0 +1,7 @@
+RW10+ CMS - Default Staging Login
+
+URL: http://IP-SERVER:8080/admin.html
+Password: RW10Admin2026!
+
+There is no username field in the current CMS.
+For production, set CMS_ADMIN_PASSWORD in .env and use HTTPS with CMS_COOKIE_SECURE=true.

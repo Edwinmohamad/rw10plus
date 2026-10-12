@@ -9,6 +9,7 @@ on:
       - "server.py"
       - "static/**"
       - "website/**"
+      - "cms/**"
       - "Dockerfile"
       - "compose.yaml"
       - "install.sh"
