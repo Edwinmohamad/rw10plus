@@ -1,0 +1,1 @@
+-keepclassmembers class id.rw10.app.MainActivity { *; }
