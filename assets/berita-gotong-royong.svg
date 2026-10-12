@@ -1,0 +1,13 @@
+<svg width="720" height="480" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="720" height="480" rx="28" fill="#EAF6ED"/>
+<rect y="300" width="720" height="180" fill="#CBE3CE"/>
+<circle cx="126" cy="250" r="34" fill="#F7C58A"/><path d="M98 284H154C178 284 198 304 198 328V372H54V328C54 304 74 284 98 284Z" fill="#1F5FD6"/>
+<circle cx="274" cy="232" r="34" fill="#FFCEA4"/><path d="M246 266H302C326 266 346 286 346 310V372H202V310C202 286 222 266 246 266Z" fill="#14A46D"/>
+<circle cx="434" cy="248" r="34" fill="#F7C58A"/><path d="M406 282H462C486 282 506 302 506 326V372H362V326C362 302 382 282 406 282Z" fill="#EB8A1D"/>
+<circle cx="578" cy="230" r="34" fill="#FFD17F"/><path d="M550 264H606C630 264 650 284 650 308V372H506V308C506 284 526 264 550 264Z" fill="#7B5CFF"/>
+<rect x="82" y="208" width="16" height="96" rx="8" fill="#7C6339" transform="rotate(20 82 208)"/>
+<rect x="232" y="202" width="16" height="102" rx="8" fill="#7C6339" transform="rotate(-18 232 202)"/>
+<rect x="392" y="216" width="16" height="88" rx="8" fill="#7C6339" transform="rotate(12 392 216)"/>
+<path d="M72 106C152 56 260 56 350 108C444 162 542 160 648 108" stroke="#91CBA0" stroke-width="24" stroke-linecap="round"/>
+<text x="42" y="70" fill="#21542F" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Kerja Bakti Lingkungan</text>
+</svg>

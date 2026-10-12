@@ -1,0 +1,19 @@
+<svg width="720" height="480" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="720" height="480" rx="28" fill="#FFF6E9"/>
+<rect x="74" y="176" width="180" height="188" rx="22" fill="#FFFFFF"/>
+<rect x="270" y="142" width="164" height="222" rx="22" fill="#FFFFFF"/>
+<rect x="450" y="196" width="196" height="168" rx="22" fill="#FFFFFF"/>
+<circle cx="164" cy="236" r="42" fill="#EB8A1D" opacity="0.16"/>
+<circle cx="352" cy="214" r="42" fill="#14A46D" opacity="0.16"/>
+<circle cx="548" cy="248" r="42" fill="#7B5CFF" opacity="0.16"/>
+<rect x="116" y="214" width="96" height="20" rx="10" fill="#EB8A1D"/>
+<rect x="306" y="190" width="92" height="20" rx="10" fill="#14A46D"/>
+<rect x="500" y="228" width="96" height="20" rx="10" fill="#7B5CFF"/>
+<rect x="108" y="254" width="114" height="12" rx="6" fill="#E6EEF8"/>
+<rect x="108" y="276" width="94" height="12" rx="6" fill="#E6EEF8"/>
+<rect x="302" y="230" width="104" height="12" rx="6" fill="#E6EEF8"/>
+<rect x="302" y="252" width="80" height="12" rx="6" fill="#E6EEF8"/>
+<rect x="492" y="268" width="110" height="12" rx="6" fill="#E6EEF8"/>
+<rect x="492" y="290" width="84" height="12" rx="6" fill="#E6EEF8"/>
+<text x="42" y="68" fill="#8A5A14" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Bazar UMKM Warga</text>
+</svg>
