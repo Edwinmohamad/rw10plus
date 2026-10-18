@@ -1,21 +1,24 @@
-# RW10+ — Testing lokal v6.0
+# RW10+ Desa Cicadas
 
-Versi testing terbaru beserta UI editorial berada di [`localhost-v6`](localhost-v6/README-MULAI-DISINI.txt).
+Website publik RW10+ yang berjalan di **port 8080** ada di folder `website/`. Revisi editorial berdasarkan referensi desktop/mobile diterapkan pada `website/index.html` dan `website/editorial-v6.css`. Tautan Portal Warga tetap memakai layanan internal di port 8188; pengelolaan konten tetap memakai CMS yang sudah ada. Database dan akun yang berjalan tidak diubah oleh revisi UI ini.
+
+Untuk memasang di server yang sudah menjalankan repository ini, buat backup data dan konfigurasi lebih dahulu, lalu tarik branch setelah PR digabung dan restart website saja:
 
 ```bash
-cd localhost-v6
-docker compose up -d --build
+cd /path/ke/rw10plus
+git pull origin main
+docker compose up -d --no-deps rw10plus-website
 ```
 
-Buka `http://IP-SERVER:8097`, Control Center di `/#/admin`, dan Ruang Warga di `/#/warga`. Untuk Windows, jalankan `localhost-v6/start-windows.bat` (Node.js 22.13+ atau Node.js 24).
+Buka `http://192.168.100.50:8080/`. GitHub tidak otomatis memperbarui container di server. Ganti `/path/ke/rw10plus` sesuai lokasi repository pada server.
 
-Backend ini memakai Node.js + SQLite, berbeda dari backend Python lama di root. Data dan akun lama belum dimigrasikan otomatis. Jangan menyalin database Python ke volume v6. Database dan kredensial hasil testing tidak disertakan dalam source. APK lama tetap menunjuk ke layanan lama; belum diubah oleh pembaruan UI ini.
+Source eksperimen Node.js + SQLite dari testing v6 tetap tersedia di `localhost-v6/` untuk perbandingan dan pekerjaan migrasi berikutnya. Source tersebut belum terhubung ke layanan 8080, tidak memigrasikan database Python/CMS, dan tidak perlu dijalankan untuk melihat revisi UI ini.
 
-Validasi: sintaks JavaScript, respons halaman/aset, API publik dan penolakan akses anonim ke API pengelolaan lolos. Uji visual browser dan Docker build belum dijalankan. Lihat `localhost-v6/VALIDASI-UI.txt`.
+Pemeriksaan revisi: semua tautan anchor internal tersedia, aset hero/logo terdaftar, file JS CMS lama tetap dipanggil, dan struktur CSS seimbang. Uji browser visual serta deployment pada server pengguna belum dilakukan.
 
 ---
 
-## Dokumentasi aplikasi Python sebelumnya
+## Dokumentasi aplikasi Python
 
 # RW10+ Internal v0.3.0
 
