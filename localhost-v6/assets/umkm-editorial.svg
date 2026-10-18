@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Ilustrasi produk usaha warga">
+<defs>
+<linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#d8b28f"/><stop offset=".55" stop-color="#be7f50"/><stop offset="1" stop-color="#713e2b"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff6dd" stop-opacity=".86"/><stop offset=".6" stop-color="#fff0cc" stop-opacity=".36"/><stop offset="1" stop-color="#67371f" stop-opacity=".22"/></linearGradient>
+<linearGradient id="bag" x1="0" x2="1"><stop stop-color="#edc68a"/><stop offset=".45" stop-color="#f9dea9"/><stop offset="1" stop-color="#b97b43"/></linearGradient>
+<filter id="shadow"><feGaussianBlur stdDeviation="16"/></filter>
+<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".45" numOctaves="2" stitchTiles="stitch" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".07"/></feComponentTransfer></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="#f5e1ba" opacity=".12"/>
+<rect x="0" y="690" width="1600" height="210" fill="#533321"/><rect x="0" y="680" width="1600" height="26" fill="#d4aa72"/>
+<ellipse cx="840" cy="770" rx="550" ry="72" fill="#23140e" opacity=".3" filter="url(#shadow)"/>
+<g transform="translate(620 120)">
+<rect x="0" y="80" width="295" height="560" rx="22" fill="url(#bag)" stroke="#8b592f" stroke-width="10"/>
+<rect x="16" y="96" width="263" height="530" rx="14" fill="url(#glass)"/>
+<path d="M48 120 Q149 45 247 120" fill="none" stroke="#fff5d7" stroke-width="24" stroke-linecap="round"/>
+<path d="M55 125 Q149 65 241 125" fill="none" stroke="#a76e42" stroke-width="8" stroke-linecap="round"/>
+<g fill="#b57232" stroke="#d79545" stroke-width="2">
+<path d="M75 302c-42-46 10-96 51-61s-3 109-51 61"/><path d="M164 283c-45-43 7-93 49-55s-6 103-49 55"/><path d="M93 420c-42-43 8-96 51-55s-8 111-51 55"/><path d="M171 409c-48-43 9-96 50-50s-8 110-50 50"/>
+</g>
+<rect x="49" y="464" width="200" height="110" rx="3" fill="#f7efdd" opacity=".96"/><path d="M67 495h160M67 514h142M67 534h152" stroke="#886641" stroke-width="6" opacity=".55"/>
+</g>
+<g transform="translate(985 240)">
+<rect x="0" y="90" width="240" height="425" rx="22" fill="#e5bb78" stroke="#956133" stroke-width="9"/>
+<rect x="12" y="100" width="216" height="405" rx="12" fill="url(#glass)"/><path d="M33 112q85-95 171 0" fill="none" stroke="#fbe4b7" stroke-width="22"/><path d="M42 112q75-75 153 0" fill="none" stroke="#926239" stroke-width="7"/>
+<g fill="#a15b30"><ellipse cx="74" cy="261" rx="44" ry="32" transform="rotate(-22 74 261)"/><ellipse cx="162" cy="256" rx="46" ry="30" transform="rotate(17 162 256)"/><ellipse cx="105" cy="344" rx="53" ry="33" transform="rotate(20 105 344)"/><ellipse cx="177" cy="349" rx="34" ry="25" transform="rotate(-10 177 349)"/></g>
+<rect x="35" y="395" width="170" height="62" fill="#f8eedb" opacity=".91"/>
+</g>
+<g transform="translate(340 360) scale(.82)"><rect x="0" y="90" width="235" height="430" rx="20" fill="#b87b50" stroke="#784327" stroke-width="9"/><rect x="13" y="100" width="210" height="404" rx="12" fill="url(#glass)"/><path d="M35 112q78-91 165 0" fill="none" stroke="#f2d6a6" stroke-width="24"/><g fill="#c48b44"><circle cx="78" cy="270" r="42"/><circle cx="148" cy="290" r="40"/><circle cx="105" cy="375" r="49"/></g></g>
+<path d="M0 660 C180 600 245 670 365 625S650 610 720 660" fill="none" stroke="#f7d8a8" opacity=".2" stroke-width="38"/>
+<rect width="1600" height="900" filter="url(#grain)" opacity=".5"/>
+</svg>

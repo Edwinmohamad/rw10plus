@@ -1,0 +1,19 @@
+services:
+  rw10plus:
+    build: .
+    container_name: RW10PLUS
+    restart: unless-stopped
+    ports:
+      - "8097:8097"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8097
+      - DATA_DIR=/app/data
+      # Aktifkan COOKIE_SECURE=true hanya jika domain memakai HTTPS
+      - COOKIE_SECURE=${COOKIE_SECURE:-false}
+    volumes:
+      - rw10_data:/app/data
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  rw10_data:

@@ -1,0 +1,31 @@
+RW10+ v6.0 — Control Center & Ruang Warga (16 Oktober 2026)
+==========================================================
+Dari v5.1 Kampung Modern Editorial, struktur visual utamanya tetap dipertahankan.
+
+BARU
+- Backend Node.js + SQLite lokal dan Docker, tanpa dependensi npm.
+- Login sesi cookie HttpOnly + SameSite, kata sandi scrypt, pembatasan percobaan login.
+- Peran Admin, Editor, dan Warga yang terpisah.
+- Control Center: berita, pengumuman, agenda, program, UMKM, galeri.
+- Tambah, edit, hapus dan upload foto asli; simpan draf atau terbitkan.
+- Konten terbit langsung muncul di semua browser yang memakai server.
+- Editor foto menampilkan pratinjau; unggahan hingga 20 MB mempertahankan resolusi file.
+- File unggahan yang tidak lagi dirujuk dibersihkan ketika foto diganti/konten dihapus.
+- Akun Warga: ajukan pengaduan, aspirasi, minat WiFi dan lihat status.
+- Admin/Editor: kelola status permohonan.
+- Administrator: tambah akun Editor/Warga, nonaktifkan/aktifkan dan reset kata sandi.
+- Pengguna dapat mengganti kata sandi sendiri.
+- Script lokal Windows, backup saat server berhenti, Dockerfile dan Compose untuk CasaOS.
+- Menu Program di navigasi utama; footer tetap menampilkan logo asli INKAMNET dan POKJA 10.
+
+PENGUJIAN
+- API: seed konten, draf privat, CRUD & publish, foto, MIME, role, permohonan,
+  manajemen akun & password, simpan data setelah restart: PASS.
+- Browser terisolasi: desktop/mobile/HP kecil tanpa overflow atau error JS,
+  dua logo termuat, login admin UI dan tambah/terbit artikel: PASS.
+
+BATASAN
+- Ini rilis pengembangan lokal. Belum ada audit keamanan profesional dan uji pengguna.
+- Integrasi CCTV, provisioning WiFi CasaOS, dataset penduduk/KK sensitif,
+  notifikasi otomatis, surat resmi dan backup terjadwal belum dilaksanakan.
+- Data ilustrasi diberi penanda; demo v5.1 localStorage tidak diimpor otomatis.

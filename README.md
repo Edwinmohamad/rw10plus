@@ -1,3 +1,22 @@
+# RW10+ — Testing lokal v6.0
+
+Versi testing terbaru beserta UI editorial berada di [`localhost-v6`](localhost-v6/README-MULAI-DISINI.txt).
+
+```bash
+cd localhost-v6
+docker compose up -d --build
+```
+
+Buka `http://IP-SERVER:8097`, Control Center di `/#/admin`, dan Ruang Warga di `/#/warga`. Untuk Windows, jalankan `localhost-v6/start-windows.bat` (Node.js 22.13+ atau Node.js 24).
+
+Backend ini memakai Node.js + SQLite, berbeda dari backend Python lama di root. Data dan akun lama belum dimigrasikan otomatis. Jangan menyalin database Python ke volume v6. Database dan kredensial hasil testing tidak disertakan dalam source. APK lama tetap menunjuk ke layanan lama; belum diubah oleh pembaruan UI ini.
+
+Validasi: sintaks JavaScript, respons halaman/aset, API publik dan penolakan akses anonim ke API pengelolaan lolos. Uji visual browser dan Docker build belum dijalankan. Lihat `localhost-v6/VALIDASI-UI.txt`.
+
+---
+
+## Dokumentasi aplikasi Python sebelumnya
+
 # RW10+ Internal v0.3.0
 
 Aplikasi Smart Neighborhood lokal untuk RW10 (RT01–RT04) dengan empat role: Warga, Ketua RT, Pengurus RW, dan Satpam RW.
@@ -24,14 +43,7 @@ Buka `http://192.168.100.50:8188`. Installer menyalin database dari container v0
 
 ## Akun pilot
 
-| Role | Nomor | PIN |
-|---|---|---|
-| Warga | `081200000001` | `0101` |
-| Ketua RT01 | `081200000003` | `0303` |
-| Pengurus RW | `081200000010` | `1010` |
-| Satpam RW | `081200000002` | `0202` |
-
-Ganti seluruh akun dan PIN demo sebelum digunakan pada data nyata.
+Kelola kredensial pilot secara privat dan ganti kredensial demo sebelum penggunaan nyata.
 
 ## Pengujian
 
