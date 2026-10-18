@@ -1,0 +1,1 @@
+UI revision: editorial proportions matched to supplied desktop/mobile references. Navigation simplified with Program and UMKM under Informasi. Existing services, authentication, roles and SQLite remain operational. Illustrations and demo labels retained where no official photographs exist.

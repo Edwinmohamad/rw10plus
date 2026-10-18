@@ -1,0 +1,8 @@
+data
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.zip
+*_preview.png
+node_modules
+.git

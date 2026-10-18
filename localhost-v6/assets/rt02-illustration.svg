@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 530" role="img" aria-label="Ilustrasi arsitektur kampung, bukan foto RT 02">
+    <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#c8e0c6"/><stop offset="1" stop-color="#faf0df"/></linearGradient><linearGradient id="path" x2="0" y2="1"><stop stop-color="#e6d3b5"/><stop offset="1" stop-color="#b9a184"/></linearGradient><pattern id="brick" width="78" height="32" patternUnits="userSpaceOnUse"><path d="M0 0H78 M0 32H78 M39 0V16 M0 16H78" fill="none" stroke="#856d5942" stroke-width="2"/></pattern></defs>
+    <rect width="1200" height="530" fill="url(#sky)"/><circle cx="704" cy="103" r="70" fill="#fff3d0" opacity=".8"/>
+    <path d="M0 350 120 238 235 302 320 190 410 261 520 211 650 278 775 204 940 280 1040 240 1200 325v205H0" fill="#47755e" opacity=".14"/>
+    <path d="M0 390 315 320 520 333 720 298 945 350 1200 307V530H0" fill="#82977a" opacity=".28"/>
+    <path d="M0 396 310 352 530 360 940 317 1200 358V530H0" fill="url(#path)"/><path d="M0 396 310 352 530 360 940 317 1200 358V530H0" fill="url(#brick)" opacity=".45"/>
+    <g stroke="#513b2a" stroke-width="9" stroke-linejoin="round">
+    <path d="M35 293 220 162 390 286v120H35Z" fill="#eaf4df"/><path d="M8 292 220 138 421 296" fill="none" stroke="#47755e" stroke-width="33"/><path d="M77 305h82v101H77Z" fill="#cba486"/><path d="M239 301h112v67H239Z" fill="#c8d8ca"/><path d="M240 332h110 M295 302v67" stroke="#6f846f" stroke-width="7"/>
+    <path d="M422 332 565 220 740 317v117H422Z" fill="#f0dec3"/><path d="m397 330 164-142 205 140" fill="none" stroke="#47755e" stroke-width="31"/><path d="M470 340h74v95h-74Z" fill="#936d52"/><path d="M580 338h105v74H580Z" fill="#c2d0bf"/>
+    <path d="M796 292 961 174 1144 290v152H796Z" fill="#f7e9d3"/><path d="m780 291 185-143 200 139" fill="none" stroke="#47755e" stroke-width="35"/><path d="M853 308h87v133h-87Z" fill="#c49f7d"/><path d="M990 311h102v83H990Z" fill="#c6d9cb"/></g>
+    <g fill="#587a58" opacity=".95"><circle cx="94" cy="242" r="65"/><circle cx="161" cy="209" r="73"/><circle cx="704" cy="225" r="83"/><circle cx="797" cy="228" r="56"/><circle cx="1170" cy="205" r="74"/></g>
+    <g fill="#83a47a"><circle cx="62" cy="223" r="48"/><circle cx="207" cy="224" r="52"/><circle cx="742" cy="204" r="51"/><circle cx="1179" cy="183" r="60"/></g>
+    <path d="M2 430c160-60 229-42 319-23m388 16c130-22 251-37 492 2" fill="none" stroke="#fdf8e9" stroke-width="7" opacity=".55"/>
+    </svg>

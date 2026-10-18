@@ -1,0 +1,1 @@
+PASS: node --check app.js; node --check server.js; HTTP GET /, /api/public, /api/me, /app.js, /styles.css; anonymous /api/manage rejected with 403. Visual browser verification not run: Chromium unavailable. Docker build not run. No automatic migration from legacy Python database.
