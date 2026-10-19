@@ -20,7 +20,13 @@ Compose. Pembaruan ini:
   dan status route/aset aplikasi yang diukur sebelum perubahan.
 - Mengembalikan konfigurasi awal jika validasi/reload/HTTP check gagal.
 
-Tidak ada container yang dihentikan/dihapus, port baru yang diterbitkan,
+Jika login gagal setelah dua pemeriksaan dan backend berstatus `unhealthy`,
+installer me-restart container backend yang sama satu kali, lalu menunggu login
+pulih. Kegagalan pemulihan menghentikan deployment sebelum frontend diubah.
+Perintah Docker memiliki batas waktu dan pemeriksaan HTTP lokal melewati proxy
+runner. Log mencatat kapasitas host, kesiapan login, serta route yang diperiksa.
+
+Tidak ada container yang dihapus, port baru yang diterbitkan,
 atau volume database/uploads yang dimigrasikan. Jangan memakai
 `docker compose up --remove-orphans` pada checkout ini untuk instalasi lama.
 
@@ -49,8 +55,9 @@ ada; jika endpoint itu tidak tersedia, konten contoh tetap berlabel dan
 installer menampilkan catatan. Perubahan ini tidak mengklaim integrasi data
 CMS baru atau kesetaraan seluruh fitur v6.
 
-Regresi lokal: enam tes untuk penjagaan konfigurasi, routing API/aset,
-penamaan aset, kompatibilitas CSP, dan rollback. Sepuluh file JS hasil
+Regresi lokal: sepuluh tes untuk penjagaan konfigurasi, routing API/aset,
+penamaan aset, kompatibilitas CSP, rollback, serta batas pemulihan backend
+dan retry setelah timeout. Sepuluh file JS hasil
 penyiapan bundle lolos `node --check`, referensi aset HTML tersedia, dan
 `sh -n install.sh` lolos. Uji Nginx/container/browser nyata belum dijalankan
 di lingkungan pengembangan; installer wajib menjalankan validasi pada host.

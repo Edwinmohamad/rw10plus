@@ -23,7 +23,11 @@ END = "    # END RW10 EDITORIAL FRONTEND"
 
 
 def run(*args):
-    return subprocess.run(args, check=True, capture_output=True, text=True).stdout
+    try:
+        return subprocess.run(args, check=True, capture_output=True, text=True,
+                              timeout=90).stdout
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError("Command timed out: " + " ".join(args)) from exc
 
 
 def container(name):
@@ -91,10 +95,53 @@ def prepare_site(source, destination, release):
 
 def response(path):
     try:
-        with urllib.request.urlopen(BASE + path, timeout=8) as r:
+        # Local readiness checks must never go through a runner's HTTP proxy.
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        with opener.open(BASE + path, timeout=15) as r:
             return r.status, r.read(), r.headers.get("Content-Type", "")
     except urllib.error.HTTPError as exc:
         return exc.code, exc.read(), exc.headers.get("Content-Type", "")
+
+
+NETWORK_ERRORS = (urllib.error.URLError, TimeoutError, ConnectionError)
+
+
+def login_ready(attempts):
+    for attempt in range(attempts):
+        try:
+            status = response("/login")[0]
+            print("Login readiness HTTP:", status, flush=True)
+            if status == 200:
+                return True
+        except NETWORK_ERRORS as exc:
+            print("Login readiness:", type(exc).__name__, flush=True)
+        if attempt + 1 < attempts:
+            time.sleep(3)
+    return False
+
+
+def ensure_backend_ready():
+    if login_ready(2):
+        return
+    info = container(APP)
+    state = info.get("State", {})
+    health = state.get("Health", {}).get("Status", "unknown")
+    print("Existing backend health:", health, flush=True)
+    if not state.get("Running") or health != "unhealthy":
+        raise RuntimeError("Login is unavailable; backend is not eligible for automatic recovery")
+    print("Restarting the unhealthy existing backend once; retaining its container and volumes.", flush=True)
+    run("docker", "restart", "--time", "30", APP)
+    if not login_ready(8):
+        raise RuntimeError("Login remains unavailable after backend recovery; frontend not changed")
+
+
+def diagnostics(repo):
+    usage = shutil.disk_usage(repo)
+    print("Host load (1/5/15 minutes):", os.getloadavg(), flush=True)
+    print("Host disk free MiB:", usage.free // 1048576, flush=True)
+    for line in Path("/proc/meminfo").read_text().splitlines():
+        if line.startswith(("MemTotal:", "MemAvailable:", "SwapFree:")):
+            print(line, flush=True)
 
 
 def verify(release, before):
@@ -133,6 +180,8 @@ def main():
     if os.geteuid() != 0:
         raise RuntimeError("Run this deployment as root")
     repo = Path(__file__).resolve().parents[1]
+    print("Starting existing-stack frontend deployment", flush=True)
+    diagnostics(repo)
     source = repo / "website"
     if not (source / "editorial-v6.css").is_file():
         raise RuntimeError("The editorial website source is missing")
@@ -149,11 +198,17 @@ def main():
         raise RuntimeError("Bind-mount paths differ from the inspected installation")
     with open("/run/lock/rw10plus-frontend-deploy.lock", "w") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        ensure_backend_ready()
         original = conf.read_text()
         release = time.strftime("%Y%m%d-%H%M%S") + "-" + str(os.getpid())
         updated = configuration(original, release)
-        before = {p: response(p) for p in
-                  ("/login", "/api/health", "/assets/product.js", "/assets/product.css")}
+        before = {}
+        for path in ("/login", "/api/health", "/assets/product.js", "/assets/product.css"):
+            print("Checking existing route:", path, flush=True)
+            try:
+                before[path] = response(path)
+            except NETWORK_ERRORS as exc:
+                raise RuntimeError("Existing route unavailable before deployment: " + path) from exc
         if before["/login"][0] != 200:
             raise RuntimeError("Login failed before deployment; no files changed")
         backup = Path(tempfile.mkdtemp(prefix="rw10-ui-", dir="/var/backups"))
@@ -178,14 +233,14 @@ def main():
                 try:
                     verify(release, before)
                     return
-                except (RuntimeError, urllib.error.URLError) as exc:
+                except (RuntimeError, *NETWORK_ERRORS) as exc:
                     last = exc
                     time.sleep(1)
             raise last
         activate(conf, updated, original, checks)
         try:
             cms = response("/content-api/api/public?kind=news&rt=ALL")
-        except urllib.error.URLError:
+        except NETWORK_ERRORS:
             cms = (0, b"", "")
         if cms[0] != 200 or "application/json" not in cms[2]:
             print("NOTE: Public CMS is not integrated with the existing app; example content remains labelled.")

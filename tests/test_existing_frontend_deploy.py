@@ -20,6 +20,28 @@ CONF = '''server {
 
 
 class DeploymentTests(unittest.TestCase):
+    def test_ready_backend_is_not_restarted(self):
+        with patch.object(deploy, "login_ready", return_value=True), patch.object(deploy, "run") as run:
+            deploy.ensure_backend_ready()
+        run.assert_not_called()
+
+    def test_only_unhealthy_backend_is_restarted_once(self):
+        info = {"State": {"Running": True, "Health": {"Status": "unhealthy"}}}
+        with patch.object(deploy, "login_ready", side_effect=[False, True]), patch.object(deploy, "container", return_value=info), patch.object(deploy, "run") as run:
+            deploy.ensure_backend_ready()
+        run.assert_called_once_with("docker", "restart", "--time", "30", deploy.APP)
+
+    def test_unavailable_healthy_backend_does_not_trigger_restart(self):
+        info = {"State": {"Running": True, "Health": {"Status": "healthy"}}}
+        with patch.object(deploy, "login_ready", return_value=False), patch.object(deploy, "container", return_value=info), patch.object(deploy, "run") as run:
+            with self.assertRaisesRegex(RuntimeError, "not eligible"):
+                deploy.ensure_backend_ready()
+        run.assert_not_called()
+
+    def test_socket_timeout_retries_and_recovers(self):
+        with patch.object(deploy, "response", side_effect=[TimeoutError(), (200, b"", "")]), patch.object(deploy.time, "sleep"):
+            self.assertTrue(deploy.login_ready(2))
+
     def test_only_homepage_route_added_and_redeploy_replaces_marker(self):
         first = deploy.configuration(CONF, "first")
         second = deploy.configuration(first, "second")
