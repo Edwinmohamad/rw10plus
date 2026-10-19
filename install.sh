@@ -27,8 +27,14 @@ if ! docker compose version >/dev/null 2>&1; then
   exit 1
 fi
 
-# Bootstrap CMS defaults so first deploy does not depend on a pre-existing .env.
-export CMS_ADMIN_PASSWORD="${CMS_ADMIN_PASSWORD:-RW10Admin2026!}"
+# The installed Uvicorn stack uses web/app, bind-mounted frontend/, and port 8080.
+# Do not create a second Compose stack or touch its named data/upload volumes.
+if docker inspect rw10plus-web-1 >/dev/null 2>&1; then
+  exec python3 "$APP_DIR/scripts/deploy_existing_frontend.py"
+fi
+
+# Other installation layouts follow the existing installer below.
+export CMS_ADMIN_PASSWORD="${CMS_ADMIN_PASSWORD:-}"
 export CMS_COOKIE_SECURE="${CMS_COOKIE_SECURE:-false}"
 
 mkdir -p data data/backups cms-data

@@ -1,13 +1,13 @@
 # RW10+ Desa Cicadas
 
-Website publik RW10+ yang berjalan di **port 8080** ada di folder `website/`. Revisi editorial berdasarkan referensi desktop/mobile diterapkan pada `website/index.html` dan `website/editorial-v6.css`. Tautan Portal Warga tetap memakai layanan internal di port 8188; pengelolaan konten tetap memakai CMS yang sudah ada. Database dan akun yang berjalan tidak diubah oleh revisi UI ini.
+Source desain publik ada di `website/`. Instalasi port **8080** yang sudah berjalan memakai Nginx `rw10plus-web-1` dan folder `frontend/`; installer kini menyiapkan desain tersebut sebagai bundle terpisah di folder frontend. Lihat [panduan deployment instalasi lama](docs/DEPLOY-EXISTING-8080.md). Revisi editorial berdasarkan referensi desktop/mobile diterapkan pada `website/index.html` dan `website/editorial-v6.css`. Pada instalasi web/app, tautan Ruang Warga memakai `/login` di port 8080. Integrasi CMS standalone belum dimigrasikan ke backend Uvicorn. Database dan akun yang berjalan tidak diubah oleh revisi UI ini.
 
-Untuk memasang di server yang sudah menjalankan repository ini, buat backup data dan konfigurasi lebih dahulu, lalu tarik branch setelah PR digabung dan restart website saja:
+Untuk memasang di server yang sudah menjalankan repository ini, buat backup data dan konfigurasi lebih dahulu, lalu, jika tidak ada deployment GitHub Actions yang sedang berjalan, tarik pembaruan setelah PR digabung dan jalankan installer:
 
 ```bash
 cd /path/ke/rw10plus
 git pull origin main
-docker compose up -d --no-deps rw10plus-website
+sudo bash install.sh
 ```
 
 Buka `http://192.168.100.50:8080/`. GitHub tidak otomatis memperbarui container di server. Ganti `/path/ke/rw10plus` sesuai lokasi repository pada server.
